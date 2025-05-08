@@ -6,7 +6,7 @@
 /**
  * init_display: clear the screen
  */
-void init_display() {
+void clearscreen() {
   // Draw a rectangle to fill all the screen
   extapp_pushRectUniform(0, 0, 320, 240, 0xFFFF);
 }

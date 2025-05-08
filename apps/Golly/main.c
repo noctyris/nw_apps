@@ -10,7 +10,7 @@ void extapp_main(void) {
     // Wait for the key to be released before starting the application
     waitForKeyReleased();
     // Draw a white background
-    init_display();
+    clearscreen();
     // Draw hello world message
     extapp_drawTextLarge("Hello World !", 0, 20 * 1, 0x0000, 0xFFFF, false);
     extapp_drawTextLarge("Press any key to continue", 0, 20 * 2, 0x0000, 0xFFFF, false);
@@ -26,11 +26,11 @@ void extapp_main(void) {
     waitForKeyReleased();
 
     // Clear the screen
-    init_display();
+    clearscreen();
 
     // If no file was selected, exit the application
     if (filename == NULL) {
-        init_display();
+        clearscreen();
         extapp_drawTextLarge("No file selected !", 0, 20 * 1, 0x0000, 0xFFFF, false);
         extapp_drawTextLarge("Press any key to exit", 0, 20 * 2, 0x0000, 0xFFFF, false);
         waitForKeyPressed();
@@ -56,7 +56,7 @@ void extapp_main(void) {
     waitForKeyReleased();
 
     // Clear the screen
-    init_display();
+    clearscreen();
 
     extapp_drawTextLarge("File content :", 0, 20 * 1, 0x0000, 0xFFFF, false);
     // It crashes on simulator, because Built-In app content is NULL
@@ -72,7 +72,7 @@ void extapp_main(void) {
     waitForKeyReleased();
 
     // Clear the screen
-    init_display();
+    clearscreen();
 
     extapp_drawTextLarge("Writing file into ram filesystem...", 0, 20 * 1, 0x0000, 0xFFFF, false);
 

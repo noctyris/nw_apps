@@ -7,7 +7,7 @@
 extern long long unsigned int keymappings[16];
 extern int keymappings_await[16];
 
-void init_display();
+void clearscreen();
 void waitForKeyPressed();
 void waitForKeyReleased();
 void waitForKeyReleasedTimeout(int timeout);
