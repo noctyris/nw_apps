@@ -21,6 +21,8 @@ void menu(int *MAX_ITER, double complex *c, int *quit)
     extapp_drawTextLarge(lselect == 1 ? "> Max. iter:" : "  Max. iter:", 5, 65, lselect == 1 ? SELECTED : DEFAULT, BGCOL, 0);
     extapp_drawTextSmall(inputs[0].value, inputs[0].x_pos, 44, DEFAULT, BGCOL, 0);
     extapp_drawTextSmall(inputs[1].value, inputs[1].x_pos, 69, SELECTED, BGCOL, 0);
+    extapp_drawTextLarge("<Ok>", 270, 200, DEFAULT, BGCOL, 0);
+    extapp_drawTextSmall("Toujours en noir et blanc", 5, 227, DEFAULT, BGCOL, 0);
 
     while (true)
     {
