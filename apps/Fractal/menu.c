@@ -66,7 +66,7 @@ void menu(int *MAX_ITER, double complex *c, int *quit)
 
         previous_scancode = scancode;
 
-        extapp_msleep(50);
+        extapp_msleep(10);
     }
 
     waitForKeyPressed();
