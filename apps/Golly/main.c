@@ -4,7 +4,6 @@
 #include "extapp_api.h"
 
 #include "inc/peripherals.h"
-#include "inc/selector.h"
 
 void extapp_main(void) {
 
