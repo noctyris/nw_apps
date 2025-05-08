@@ -2,7 +2,7 @@ API=../../api
 CC=arm-none-eabi-gcc
 OBJCOPY=arm-none-eabi-objcopy
 AR=arm-none-eabi-ar
-CFLAGS=-DNDEBUG -ggdb3 -I$(API) -O0 -mcpu=cortex-m7 -mthumb -mfpu=fpv5-sp-d16 -mfloat-abi=hard -fno-common -fdata-sections -ffunction-sections -fno-exceptions
+CFLAGS=-DNDEBUG -ggdb3 -I$(API) -O3 -mcpu=cortex-m7 -mthumb -mfpu=fpv5-sp-d16 -mfloat-abi=hard -fno-common -fdata-sections -ffunction-sections -fno-exceptions -flto -fwhole-program
 LDFLAGS=-Wl,-L$(API) -Wl,--gc-sections -Wl,--entry=entrypoint --specs=nosys.specs -nostartfiles -Wl,-Ur -lapi -lm
 
 %.o: %.c
