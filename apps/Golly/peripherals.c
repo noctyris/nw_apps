@@ -8,7 +8,7 @@
  */
 void clearscreen() {
   // Draw a rectangle to fill all the screen
-  extapp_pushRectUniform(0, 0, 320, 240, 0xFFFF);
+  extapp_pushRectUniform(0, 0, 320, 240, 0);
 }
 
 /**
@@ -44,4 +44,45 @@ void waitForKeyReleasedTimeout(int timeout) {
     // Decrease the timeout of 10 milliseconds
     timeout -= 10;
   }
+}
+/**
+ * getColor: get the color of a cell
+ * @param cell Cell
+*/
+uint16_t getColor(Cell cell) {
+  return cell.isAlive ? 0xFFFF : 0x0000;
+}
+
+/**
+ * drawCells: draw the cells on the screen
+ * @param cells Cell
+ */
+void drawCells(Cell cells[ROWS][COLUMNS]) {
+  // Draw the cells on the screen
+  for (int i = 0; i < ROWS ; i++) {
+    for (int j = 0; j < COLUMNS; j++) {
+      extapp_pushRectUniform(i * SIZE, j * SIZE, SIZE, SIZE, getColor(cells[i][j]));
+    }
+  }
+}
+
+int countNeighbors(Cell cells[ROWS][COLUMNS], int x, int y) {
+  // Count the number of alive neighbors
+  int count = 0;
+  for (int i = -1; i <= 1; i++) {
+    for (int j = -1; j <= 1; j++) {
+      if (i == 0 && j == 0) continue;
+      int nx = (x + i + ROWS) % ROWS;
+      int ny = (y + j + COLUMNS) % COLUMNS;
+      if (nx < 0 || nx >= ROWS || ny < 0 || ny >= COLUMNS) continue;
+      if (cells[nx][ny].isAlive) count++;
+    }
+  }
+  return count;
+}
+
+void drawCursor(Cell cells[ROWS][COLUMNS], int x, int y) {
+  // Draw the cursor on the screen
+  extapp_pushRectUniform(x * SIZE, y * SIZE, SIZE, SIZE, 0xFF00);
+  extapp_pushRectUniform(x * SIZE + 1, y * SIZE + 1, SIZE - 2 , SIZE - 2, getColor(cells[x][y]));
 }
