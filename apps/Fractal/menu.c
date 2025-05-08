@@ -4,12 +4,12 @@
 #define SELECTED 0xFFFF
 #define NOPTIONS 2
 
-void menu(int *MAX_ITER, double complex *c)
+void menu(int *MAX_ITER, double complex *c, int *quit)
 {
     int lselect = 0;
     input_t inputs[NOPTIONS];
-    inputs[0] = (input_t){.cursor = 0, .max = 3, .value = calloc(4, sizeof(char)), .x_pos = 135};
-    inputs[1] = (input_t){.cursor = 0, .max = 30, .value = calloc(31, sizeof(char)), .x_pos = 65};
+    inputs[0] = (input_t){.cursor = 0, .max = 30, .value = calloc(31, sizeof(char)), .x_pos = 65};
+    inputs[1] = (input_t){.cursor = 0, .max = 3, .value = calloc(4, sizeof(char)), .x_pos = 135};
     uint64_t previous_scancode = 0;
 
     clearscreen();
@@ -17,10 +17,10 @@ void menu(int *MAX_ITER, double complex *c)
     extapp_pushRectUniform(0, 0, 320, 18, rgb_16(50, 50, 50));
     extapp_drawTextSmall("FRACTAL", 140, 4, 0xFFFF, rgb_16(50, 50, 50), 0);
 
-    extapp_drawTextLarge(lselect == 0 ? "> Max. iter:" : "  Max. iter:", 5, 40, lselect == 0 ? SELECTED : DEFAULT, BGCOL, 0);
-    extapp_drawTextLarge(lselect == 1 ? "> c =" : "  c =", 5, 65, lselect == 1 ? SELECTED : DEFAULT, BGCOL, 0);
-    extapp_drawTextSmall(inputs[0].value, inputs[0].x_pos, 44, SELECTED, BGCOL, 0);
-    extapp_drawTextSmall(inputs[1].value, inputs[1].x_pos, 69, DEFAULT, BGCOL, 0);
+    extapp_drawTextLarge(lselect == 0 ? "> c =" : "  c =", 5, 40, lselect == 0 ? SELECTED : DEFAULT, BGCOL, 0);
+    extapp_drawTextLarge(lselect == 1 ? "> Max. iter:" : "  Max. iter:", 5, 65, lselect == 1 ? SELECTED : DEFAULT, BGCOL, 0);
+    extapp_drawTextSmall(inputs[0].value, inputs[0].x_pos, 44, DEFAULT, BGCOL, 0);
+    extapp_drawTextSmall(inputs[1].value, inputs[1].x_pos, 69, SELECTED, BGCOL, 0);
 
     while (true)
     {
@@ -29,8 +29,8 @@ void menu(int *MAX_ITER, double complex *c)
             inputs[i].value[inputs[i].cursor] = '\0';
         }
 
-        extapp_drawTextLarge(lselect == 0 ? "> Max. iter:" : "  Max. iter:", 5, 40, lselect == 0 ? SELECTED : DEFAULT, BGCOL, 0);
-        extapp_drawTextLarge(lselect == 1 ? "> c =" : "  c =", 5, 65, lselect == 1 ? SELECTED : DEFAULT, BGCOL, 0);
+        extapp_drawTextLarge(lselect == 0 ? "> c =" : "  c =", 5, 40, lselect == 0 ? SELECTED : DEFAULT, BGCOL, 0);
+        extapp_drawTextLarge(lselect == 1 ? "> Max. iter:" : "  Max. iter:", 5, 65, lselect == 1 ? SELECTED : DEFAULT, BGCOL, 0);
         extapp_drawTextSmall(inputs[0].value, inputs[0].x_pos, 44, lselect == 0 ? SELECTED : DEFAULT, BGCOL, 0);
         extapp_drawTextSmall(inputs[1].value, inputs[1].x_pos, 69, lselect == 1 ? SELECTED : DEFAULT, BGCOL, 0);
 
@@ -38,18 +38,13 @@ void menu(int *MAX_ITER, double complex *c)
 
         if (scancode != 0 && scancode != previous_scancode)
         {
-            if (scancode & SCANCODE_Up)
-            {
-                lselect = (lselect - 1 + NOPTIONS) % NOPTIONS;
-            }
-            else if (scancode & SCANCODE_Down)
-            {
-                lselect = (lselect + 1) % NOPTIONS;
-            }
-            else if (scancode & SCANCODE_OK)
-            {
+            if (scancode & SCANCODE_Up) lselect = (lselect - 1 + NOPTIONS) % NOPTIONS;
+            else if (scancode & SCANCODE_Down) lselect = (lselect + 1) % NOPTIONS;
+            else if (scancode & SCANCODE_Back) {
+                *quit = 1;
                 break;
             }
+            else if (scancode & SCANCODE_OK || scancode & SCANCODE_EXE) break;
             else if (scancode & SCANCODE_Backspace && inputs[lselect].cursor > 0)
             {
                 inputs[lselect].cursor--;
@@ -58,7 +53,7 @@ void menu(int *MAX_ITER, double complex *c)
             }
             else if (inputs[lselect].cursor < inputs[lselect].max)
             {
-                char _c = scancodeToChar(scancode);
+                char _c = lselect == 1 ? scancodeToCharNbr(scancode) : scancodeToCharFull(scancode);
                 if (_c != '\0')
                 {
                     inputs[lselect].value[inputs[lselect].cursor] = _c;
@@ -77,9 +72,11 @@ void menu(int *MAX_ITER, double complex *c)
     waitForKeyPressed();
     waitForKeyReleased();
 
-    *MAX_ITER = 100;
-    *c = -0.5251993 - 0.5251993 * I;
-    
+    *MAX_ITER = atoi(inputs[1].value);
+    if (*MAX_ITER < 1)
+        *MAX_ITER = 100;
+    *c = parse_complex(inputs[0].value);
+
     free(inputs[0].value);
     free(inputs[1].value);
 }

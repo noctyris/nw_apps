@@ -70,10 +70,10 @@ uint16_t rgb_16(uint16_t r, uint16_t g, uint16_t b) {
 }
 
 /**
- * scancodeToChar: convert a scancode to a char
+ * scancodeToChar: convert a scancode to a char (all numeric keyboard)
  * @param scancode scancode obtained from extapp_scanKeyboard()
 */
-char scancodeToChar(uint64_t scancode) {
+char scancodeToCharFull(uint64_t scancode) {
     if (scancode & SCANCODE_Zero) return '0';
     if (scancode & SCANCODE_One) return '1';
     if (scancode & SCANCODE_Two) return '2';
@@ -89,4 +89,54 @@ char scancodeToChar(uint64_t scancode) {
     if (scancode & SCANCODE_Dot) return '.';
     if (scancode & SCANCODE_Imaginary) return 'i';
     return '\0';
+}
+
+/**
+ * scancodeToChar: convert a scancode to a char (numbers only)
+ * @param scancode scancode obtained from extapp_scanKeyboard()
+*/
+char scancodeToCharNbr(uint64_t scancode) {
+    if (scancode & SCANCODE_Zero) return '0';
+    if (scancode & SCANCODE_One) return '1';
+    if (scancode & SCANCODE_Two) return '2';
+    if (scancode & SCANCODE_Three) return '3';
+    if (scancode & SCANCODE_Four) return '4';
+    if (scancode & SCANCODE_Five) return '5';
+    if (scancode & SCANCODE_Six) return '6';
+    if (scancode & SCANCODE_Seven) return '7';
+    if (scancode & SCANCODE_Eight) return '8';
+    if (scancode & SCANCODE_Nine) return '9';
+    return '\0';
+}
+
+double complex parse_complex(const char *str) {
+    double real = 0.0, imag = 0.0;
+    char *endptr;
+
+    // Étape 1 : Extraire la partie réelle
+    real = strtod(str, &endptr);
+
+    // Étape 2 : Vérifier si une partie imaginaire existe
+    if (*endptr == '+' || *endptr == '-') {
+        // Avancer au-delà du signe
+        const char *imag_start = endptr;
+
+        // Extraire la partie imaginaire
+        imag = strtod(imag_start, &endptr);
+
+        // Vérifier si le caractère suivant est 'i' ou 'j'
+        if (*endptr == 'i' || *endptr == 'j') {
+            // Tout est valide, continuer
+        } else {
+            fprintf(stderr, "Erreur : Format de nombre complexe invalide.\n");
+            return 0.0 + 0.0 * I; // Retourner un nombre complexe nul en cas d'erreur
+        }
+    } else if (*endptr == 'i' || *endptr == 'j') {
+        // Cas spécial : Pas de partie réelle, seulement une partie imaginaire
+        imag = real; // La valeur extraite est en fait la partie imaginaire
+        real = 0.0;
+    }
+
+    // Retourner le nombre complexe
+    return real + imag * I;
 }
