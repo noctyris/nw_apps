@@ -2,13 +2,12 @@
 #include "extapp_api.h"
 #include <string.h>
 
-
 /**
  * clearscreen: clear the screen
  */
 void clearscreen() {
   // Draw a rectangle to fill all the screen
-  extapp_pushRectUniform(0, 0, 320, 240, 0x0000);
+  extapp_pushRectUniform(0, 0, 320, 240, BGCOL);
 }
 
 /**
@@ -59,7 +58,35 @@ uint16_t makeColor(int iter, int max) {
     return color;
 }
 
+/**
+ * rgb_16: convert RGB color to 16B color
+ * @param r red value
+ * @param g green value
+ * @param b blue value
+*/
 uint16_t rgb_16(uint16_t r, uint16_t g, uint16_t b) {
     uint16_t color = (r>>3)<<11 | (g>>2)<<5 | b>>3;
     return color;
+}
+
+/**
+ * scancodeToChar: convert a scancode to a char
+ * @param scancode scancode obtained from extapp_scanKeyboard()
+*/
+char scancodeToChar(uint64_t scancode) {
+    if (scancode & SCANCODE_Zero) return '0';
+    if (scancode & SCANCODE_One) return '1';
+    if (scancode & SCANCODE_Two) return '2';
+    if (scancode & SCANCODE_Three) return '3';
+    if (scancode & SCANCODE_Four) return '4';
+    if (scancode & SCANCODE_Five) return '5';
+    if (scancode & SCANCODE_Six) return '6';
+    if (scancode & SCANCODE_Seven) return '7';
+    if (scancode & SCANCODE_Eight) return '8';
+    if (scancode & SCANCODE_Nine) return '9';
+    if (scancode & SCANCODE_Minus) return '-';
+    if (scancode & SCANCODE_Plus) return '+';
+    if (scancode & SCANCODE_Dot) return '.';
+    if (scancode & SCANCODE_Imaginary) return 'i';
+    return '\0';
 }

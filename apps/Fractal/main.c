@@ -16,7 +16,7 @@ void extapp_main(void) {
     double complex c;
 
     menu(&MAX_ITER, &c);
-    // return;
+    return;
 
     clearscreen();
 
