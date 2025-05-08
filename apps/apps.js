@@ -3,7 +3,6 @@
 angular.module('nwas').service('apps', function() {
   return [
     { name: "Fractal", description: {en: "Fractal generator", fr: "Générateur de fractales"} },
-    { name: "KhiCAS", description: {en: "Computer algebra system", fr: "Système de calcul formel"} },
     { name: "Periodic", description: {en: "Periodic table of elements", fr: "Tableau périodique des éléments"} },
     { name: "Nofrendo", description: {en: "NES emulator", fr: "Émulateur NES"} },
     { name: "Peanut-GBC", description: {en: "GameBoy Color emulator", fr: "Émulateur GameBoy Color"} },
