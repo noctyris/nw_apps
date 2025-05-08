@@ -3,6 +3,10 @@
 
 #include <stdint.h>
 
+typedef struct {
+    int nthGen;
+    int isAlive;
+} Cell;
 
 extern long long unsigned int keymappings[16];
 extern int keymappings_await[16];
