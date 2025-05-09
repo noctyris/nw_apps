@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <math.h>
 
 #define SIZE 5
 #define ROWS (320 / SIZE)
@@ -27,8 +28,9 @@ void waitForKeyPressed();
 void waitForKeyReleased();
 void waitForKeyReleasedTimeout(int timeout);
 void drawCells(Cell cells[ROWS][COLUMNS]);
+void initCells(Cell (*cells)[COLUMNS]);
 int countNeighbors(Cell cells[ROWS][COLUMNS], int x, int y);
-void drawCursor(Cell cells[ROWS][COLUMNS], int x, int y);
+void drawCursor(Cell cells[ROWS][COLUMNS], coord_t coord);
 uint16_t getColor(Cell cell);
 
 #endif
