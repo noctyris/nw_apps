@@ -4,6 +4,8 @@
 #include "extapp_api.h"
 
 #include "inc/peripherals.h"
+#include "inc/pausedMode.h"
+#include "inc/runningMode.h"
 
 void extapp_main(void)
 {
@@ -35,120 +37,8 @@ void extapp_main(void)
 
     while (running)
     {
-        if (!paused)
-        {
-            uint64_t scancode = extapp_scanKeyboard();
-            switch (scancode)
-            {
-            case SCANCODE_Home:
-                running = false;
-                break;
-            case SCANCODE_Back:
-                paused = true;
-                drawCellsColor(cells);
-                drawCursor(cells, coord);
-                waitForKeyReleased();
-                break;
-            case SCANCODE_Plus:
-                speed = speed < 10 ? speed + 1 : speed;
-                waitForKeyReleased();
-                break;
-            case SCANCODE_Minus:
-                speed = speed > 1 ? speed - 1 : speed;
-                waitForKeyReleased();
-                break;
-            case SCANCODE_Zero:
-                initCells(cells);
-                paused=true;
-                drawCellsColor(cells);
-                drawCursor(cells, coord);
-                break;
-            }
-
-            drawCellsColor(cells);
-
-            for (int i = 0; i < ROWS; i++)
-            {
-                for (int j = 0; j < COLUMNS; j++)
-                {
-                    int aliveNeighbors = countNeighbors(cells, i, j);
-                    if (cells[(i+ROWS)%ROWS][(j+COLUMNS)%COLUMNS].isAlive)
-                    {
-                        newCells[(i+ROWS)%ROWS][(j+COLUMNS)%COLUMNS].isAlive = aliveNeighbors == 2 || aliveNeighbors == 3;
-                        newCells[(i+ROWS)%ROWS][(j+COLUMNS)%COLUMNS].nthGen = cells[(i+ROWS)%ROWS][(j+COLUMNS)%COLUMNS].nthGen + 1;
-                    }
-                    else
-                    {
-                        newCells[(i+ROWS)%ROWS][(j+COLUMNS)%COLUMNS].isAlive = aliveNeighbors == 3;
-                        newCells[(i+ROWS)%ROWS][(j+COLUMNS)%COLUMNS].nthGen = 1;
-                    }
-                }
-            }
-
-            for (int i = 0; i < ROWS; i++)
-            {
-                for (int j = 0; j < COLUMNS; j++)
-                {
-                    cells[i][j].isAlive = newCells[i][j].isAlive;
-                    cells[i][j].nthGen = newCells[i][j].nthGen;
-                }
-            }
-
-            extapp_msleep(-10*speed + 100);
-            nGen++;
-        }
-        else
-        {
-            uint64_t scancode = extapp_scanKeyboard();
-            switch (scancode)
-            {
-                case SCANCODE_Home:
-                    running = false;
-                    break;
-                case SCANCODE_Back:
-                    paused = false;
-                    waitForKeyReleased();
-                    break;
-                case SCANCODE_Left:
-                    coord.x = (coord.x - 1 + ROWS) % ROWS;
-                    drawCellsMono(cells);
-                    drawCursor(cells, coord);
-                    waitForKeyReleased();
-                    break;
-                case SCANCODE_Right:
-                    coord.x = (coord.x + 1) % ROWS;
-                    drawCellsMono(cells);
-                    drawCursor(cells, coord);
-                    waitForKeyReleased();
-                    break;
-                case SCANCODE_Up:
-                    coord.y = (coord.y - 1 + COLUMNS) % COLUMNS;
-                    drawCellsMono(cells);
-                    drawCursor(cells, coord);
-                    waitForKeyReleased();
-                    break;
-                case SCANCODE_Down:
-                    coord.y = (coord.y + 1) % COLUMNS;
-                    drawCellsMono(cells);
-                    drawCursor(cells, coord);
-                    waitForKeyReleased();
-                    break;
-                case SCANCODE_OK:
-                    cells[coord.x][coord.y].isAlive = !cells[coord.x][coord.y].isAlive;
-                    cells[coord.x][coord.y].nthGen = cells[coord.x][coord.y].isAlive ? 1 : 0;
-                    drawCellsMono(cells);
-                    drawCursor(cells, coord);
-                    waitForKeyReleased();
-                    break;
-                case SCANCODE_Zero:
-                    initCells(cells);
-                    drawCellsMono(cells);
-                    drawCursor(cells, coord);
-                    waitForKeyReleased();
-                    break;
-            }
-            extapp_msleep(20);
-        }
+        if (!paused) handleRunningMode(cells, newCells, &paused, &speed, &nGen);
+        else handlePausedMode(cells, &coord, &running, &paused, &speed);
     }
 
     free(cells);
