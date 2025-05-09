@@ -1,9 +1,9 @@
 - toolbox
-- colors
 - world type
 - life rules
 
 -=-=-=-=-=-=-=-=-=-=-=-
 
+- colors
 - speed +/-
 - reset

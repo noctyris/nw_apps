@@ -30,7 +30,7 @@ void extapp_main(void)
     //     cells[x][y].isAlive = true;
     // }
 
-    drawCells(cells);
+    drawCellsColor(cells);
     drawCursor(cells, coord);
 
     while (running)
@@ -45,7 +45,7 @@ void extapp_main(void)
                 break;
             case SCANCODE_Back:
                 paused = true;
-                drawCells(cells);
+                drawCellsColor(cells);
                 drawCursor(cells, coord);
                 waitForKeyReleased();
                 break;
@@ -60,12 +60,12 @@ void extapp_main(void)
             case SCANCODE_Zero:
                 initCells(cells);
                 paused=true;
-                drawCells(cells);
+                drawCellsColor(cells);
                 drawCursor(cells, coord);
                 break;
             }
 
-            drawCells(cells);
+            drawCellsColor(cells);
 
             for (int i = 0; i < ROWS; i++)
             {
@@ -111,38 +111,38 @@ void extapp_main(void)
                     break;
                 case SCANCODE_Left:
                     coord.x = (coord.x - 1 + ROWS) % ROWS;
-                    drawCells(cells);
+                    drawCellsMono(cells);
                     drawCursor(cells, coord);
                     waitForKeyReleased();
                     break;
                 case SCANCODE_Right:
                     coord.x = (coord.x + 1) % ROWS;
-                    drawCells(cells);
+                    drawCellsMono(cells);
                     drawCursor(cells, coord);
                     waitForKeyReleased();
                     break;
                 case SCANCODE_Up:
                     coord.y = (coord.y - 1 + COLUMNS) % COLUMNS;
-                    drawCells(cells);
+                    drawCellsMono(cells);
                     drawCursor(cells, coord);
                     waitForKeyReleased();
                     break;
                 case SCANCODE_Down:
                     coord.y = (coord.y + 1) % COLUMNS;
-                    drawCells(cells);
+                    drawCellsMono(cells);
                     drawCursor(cells, coord);
                     waitForKeyReleased();
                     break;
                 case SCANCODE_OK:
                     cells[coord.x][coord.y].isAlive = !cells[coord.x][coord.y].isAlive;
                     cells[coord.x][coord.y].nthGen = cells[coord.x][coord.y].isAlive ? 1 : 0;
-                    drawCells(cells);
+                    drawCellsMono(cells);
                     drawCursor(cells, coord);
                     waitForKeyReleased();
                     break;
                 case SCANCODE_Zero:
                     initCells(cells);
-                    drawCells(cells);
+                    drawCellsMono(cells);
                     drawCursor(cells, coord);
                     waitForKeyReleased();
                     break;

@@ -51,13 +51,20 @@ void waitForKeyReleasedTimeout(int timeout)
     timeout -= 10;
   }
 }
+
+uint16_t rgb_16(uint8_t r, uint8_t g, uint8_t b)
+{
+  // Convert RGB to 16-bit color
+  return ((r & 0xF8) << 8) | ((g & 0xFC) << 3) | (b >> 3);
+}
+
 /**
  * getColor: get the color of a cell
  * @param cell Cell
  */
 uint16_t getColor(Cell cell)
 {
-  return cell.isAlive ? 0xFFFF : 0x0000;
+  return !cell.isAlive ? 0x0000 : (cell.nthGen>5 ? 0xF000 : rgb_16(41*cell.nthGen + 50, 0, -41*cell.nthGen + 255));
 }
 
 /**
@@ -77,10 +84,10 @@ void initCells(Cell (*cells)[COLUMNS])
 }
 
 /**
- * drawCells: draw the cells on the screen
+ * drawCellsColor: draw the cells on the screen
  * @param cells Cell
  */
-void drawCells(Cell cells[ROWS][COLUMNS])
+void drawCellsColor(Cell cells[ROWS][COLUMNS])
 {
   // Draw the cells on the screen
   for (int i = 0; i < ROWS; i++)
@@ -88,6 +95,22 @@ void drawCells(Cell cells[ROWS][COLUMNS])
     for (int j = 0; j < COLUMNS; j++)
     {
       extapp_pushRectUniform(i * SIZE, j * SIZE, SIZE, SIZE, getColor(cells[i][j]));
+    }
+  }
+}
+
+/**
+ * drawCellsMono: draw the cells on the screen
+ * @param cells Cell
+ */
+void drawCellsMono(Cell cells[ROWS][COLUMNS])
+{
+  // Draw the cells on the screen
+  for (int i = 0; i < ROWS; i++)
+  {
+    for (int j = 0; j < COLUMNS; j++)
+    {
+      extapp_pushRectUniform(i * SIZE, j * SIZE, SIZE, SIZE, cells[i][j].isAlive ? 0xFFFF : 0x0000);
     }
   }
 }
@@ -117,5 +140,5 @@ void drawCursor(Cell cells[ROWS][COLUMNS], coord_t coord)
 {
   // Draw the cursor on the screen
   extapp_pushRectUniform(coord.x * SIZE, coord.y * SIZE, SIZE, SIZE, 0xFF00);
-  extapp_pushRectUniform(coord.x * SIZE + 1, coord.y * SIZE + 1, SIZE - 2, SIZE - 2, getColor(cells[coord.x][coord.y]));
+  extapp_pushRectUniform(coord.x * SIZE + 1, coord.y * SIZE + 1, SIZE - 2, SIZE - 2, cells[coord.x][coord.y].isAlive ? 0xFFFF : 0x0000);
 }
