@@ -1,5 +1,5 @@
-#ifndef EXAMPLE_PERIPHERALS_H_
-#define EXAMPLE_PERIPHERALS_H_
+#ifndef COMPRESSOR_PERIPHERALS_H_
+#define COMPRESSOR_PERIPHERALS_H_
 
 #include <stdint.h>
 
@@ -11,5 +11,6 @@ void init_display();
 void waitForKeyPressed();
 void waitForKeyReleased();
 void waitForKeyReleasedTimeout(int timeout);
+void updateTitlebar(char * title);
 
 #endif
