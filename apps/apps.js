@@ -4,8 +4,8 @@ angular.module('nwas').service('apps', function() {
   return [
     { name: "Golly", description: {en: "Game of Life imagined by John Conway", fr: "Jeu de la vie imaginé par John Conway"} },
     { name: "Fractal", description: {en: "Fractal generator (W/B)", fr: "Générateur de fractales (N/B)"} },
-    { name: "KhiCAS", description: {en: "Computer algebra system", fr: "Système de calcul formel"} },
     { name: "Peanut-GB", description: {en: "GameBoy emulator", fr: "Émulateur GameBoy"} },
+    { name: "KhiCAS", description: {en: "Computer algebra system", fr: "Système de calcul formel"} },
     { name: "Periodic", description: {en: "Periodic table of elements", fr: "Tableau périodique des éléments"} },
     { name: "Nofrendo", description: {en: "NES emulator", fr: "Émulateur NES"} },
     { name: "Peanut-GBC", description: {en: "GameBoy Color emulator", fr: "Émulateur GameBoy Color"} },
@@ -17,6 +17,6 @@ angular.module('nwas').service('apps', function() {
     { name: "PngBrowser", description: {en: "View PNG images", fr: "Affichez des images PNG"} },
     { name: "RayCaster", description: {en: "A simple raycasting project", fr: "Un simple projet de raycasting"} },
     { name: "Compressor", description: {en: "Compress your files", fr: "Compressez vos fichiers"} },
-    { name: "Backup", description: {en: "Backup scripts wirelessly", fr: "Sauvegardez vos fichiers sans fil"} },
+    { name: "Backup", description: {en: "Backup scripts wirelessly (QR Code)", fr: "Sauvegardez vos fichiers sans fil (Code QR)"} },
   ];
 });
