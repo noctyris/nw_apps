@@ -4,12 +4,11 @@ angular.module('nwas').service('apps', function() {
   return [
     { name: "Golly", description: {en: "Game of Life imagined by John Conway", fr: "Jeu de la vie imaginé par John Conway"} },
     { name: "Fractal", description: {en: "Fractal generator (W/B)", fr: "Générateur de fractales (N/B)"} },
-    { name: "Planets", description: {en: "Planets trajectory", fr: "Trajectoires de planètes"} },
     { name: "KhiCAS", description: {en: "Computer algebra system", fr: "Système de calcul formel"} },
+    { name: "Peanut-GB", description: {en: "GameBoy emulator", fr: "Émulateur GameBoy"} },
     { name: "Periodic", description: {en: "Periodic table of elements", fr: "Tableau périodique des éléments"} },
     { name: "Nofrendo", description: {en: "NES emulator", fr: "Émulateur NES"} },
     { name: "Peanut-GBC", description: {en: "GameBoy Color emulator", fr: "Émulateur GameBoy Color"} },
-    { name: "Peanut-GB", description: {en: "GameBoy emulator", fr: "Émulateur GameBoy"} },
     { name: "HexEdit", description: {en: "Hexadecimal editor", fr: "Éditeur hexadécimal"} },
     { name: "BadApple", description: {en: "Bad Apple demo", fr: "Démo Bad Apple"} },
     { name: "UnitCircle", description: {en: "Unit circle", fr: "Cercle trigonométrique"} },
